@@ -12,14 +12,14 @@ class App extends React.Component {
 
   update(e) {
     this.setState({
-      a : this.refs.a.value,
+      a : this.a.value,
       b : this.refs.b.value
     })
   }
   render() {
     return (
       <div>
-        <input ref="a" type="text" onChange={this.update.bind(this)}/>
+        <input ref={node => this.a = node} type="text" onChange={this.update.bind(this)}/>
         <h1>{this.state.a}</h1>
         <input ref="b" type="text" onChange={this.update.bind(this)}/>
         <h1>{this.state.b}</h1>
