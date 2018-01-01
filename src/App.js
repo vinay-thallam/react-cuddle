@@ -15,19 +15,23 @@ class LifeCycle extends React.Component {
   }
   componentWillMount(){
     console.log("componentWillMount") //will be called only once
+    this.setState({m : 2})
   }
   render() {
     console.log("render") //will be called whenever there is change in state
     return (
-      <button onClick={this.update.bind(this)}>{this.state.val}</button>
+      <button onClick={this.update.bind(this)}>{this.state.val * this.state.m}</button>
       )
   }
   componentDidMount(){
     console.log("componentDidMount") //will be called only once
+    console.log(ReactDOM.findDOMNode(this))   
+    this.inc = window.setInterval(this.update.bind(this), 500)
   }
 
   componentWillUnmount(){
     console.log("componentWillUnMount") //will be called only once
+    window.clearInterval(this.inc)
   }
 }
 
