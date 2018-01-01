@@ -21,10 +21,12 @@ class StarWars extends React.Component {
 
 		return (
 			<div>
-				{items.map(item => <h4 key={item.name}>{item.name}</h4>)}
+				{items.map(item => <Person key={item.name} person={item}/>)}
 			</div>
 			)
 	}
 }
+
+const Person = (props) => <h4>{props.person.name}</h4>
 
 export default StarWars
