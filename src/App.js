@@ -1,54 +1,44 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-class LifeCycle extends React.Component {
+/*
+The React component lifecycle will allow you to update your components at runtime. 
+This lesson will explore how to do that. componentWillReceiveProps gives us an opportunity 
+to update state by reacting to a prop transition before the render() call is made. 
+shouldComponentUpdate allows us to set conditions on when we should update a component 
+so that we are not rendering constantly. componentDidUpdate lets us react to a component 
+updating.
 
-  constructor() {
+*/
+class App extends React.Component {
+
+  constructor(){
     super()
-    this.state = {
-      val : 0
-    }
+    this.state = {increasing : false}
   }
-
-  update() {
-    this.setState({val : this.state.val+1})
+  update(){
+    ReactDOM.render(<App val={this.props.val+1}/>, document.getElementById('root'))
   }
-  componentWillMount(){
-    console.log("componentWillMount") //will be called only once
-    this.setState({m : 2})
+  componentWillReceiveProps(nextProps){
+    console.log('componentWillReceiveProps')
+    this.setState({increasing : nextProps.val > this.props.val})
+  }
+  shouldComponentUpdate(nextProps, nextState){
+    return nextProps.val % 5 === 0
   }
   render() {
-    console.log("render") //will be called whenever there is change in state
+    console.log(`increasing : ${this.state.increasing}`)
     return (
-      <button onClick={this.update.bind(this)}>{this.state.val * this.state.m}</button>
+      <button onClick={this.update.bind(this)}>{this.props.val}</button>
       )
   }
-  componentDidMount(){
-    console.log("componentDidMount") //will be called only once
-    console.log(ReactDOM.findDOMNode(this))   
-    this.inc = window.setInterval(this.update.bind(this), 500)
-  }
-
-  componentWillUnmount(){
-    console.log("componentWillUnMount") //will be called only once
-    window.clearInterval(this.inc)
+  componentDidUpdate(prevProps, prevState){
+    console.log(`prev props : ${prevProps.val}`)
   }
 }
 
-class App extends React.Component {
-  mount(){
-    ReactDOM.render(<LifeCycle/>, document.getElementById('mount_point'))
-  }
-  unmount(){
-    ReactDOM.unmountComponentAtNode(document.getElementById('mount_point'))
-  }
-  render(){
-    return <div>
-      <button onClick={this.mount}>Mount</button>
-      <button onClick={this.unmount}>UnMount</button>
-      <div id="mount_point"></div>
-    </div>
-  }
+App.defaultProps = {
+  val : 0
 }
 
 export default App
