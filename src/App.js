@@ -1,40 +1,49 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 
-class App extends React.Component {
+class LifeCycle extends React.Component {
 
   constructor() {
     super()
     this.state = {
-      a : "this is initial text of a",
-      b : "this is initial text of b"
+      val : 0
     }
   }
 
-  update(e) {
-    this.setState({
-      a : this.a.refs.input.value,
-      b : this.refs.b.value
-    })
+  update() {
+    this.setState({val : this.state.val+1})
+  }
+  componentWillMount(){
+    console.log("componentWillMount") //will be called only once
   }
   render() {
+    console.log("render") //will be called whenever there is change in state
     return (
-      <div>
-        <Input ref={component => this.a = component} update={this.update.bind(this)}/>
-        <h1>{this.state.a}</h1>
-        <input ref="b" type="text" onChange={this.update.bind(this)}/>
-        <h1>{this.state.b}</h1>
-      </div>
+      <button onClick={this.update.bind(this)}>{this.state.val}</button>
       )
+  }
+  componentDidMount(){
+    console.log("componentDidMount") //will be called only once
+  }
+
+  componentWillUnmount(){
+    console.log("componentWillUnMount") //will be called only once
   }
 }
 
-class Input extends React.Component {
+class App extends React.Component {
+  mount(){
+    ReactDOM.render(<LifeCycle/>, document.getElementById('mount_point'))
+  }
+  unmount(){
+    ReactDOM.unmountComponentAtNode(document.getElementById('mount_point'))
+  }
   render(){
-    return (
-      <div>
-        <input ref="input" type="text" onChange={this.props.update}/>
-      </div>
-    )
+    return <div>
+      <button onClick={this.mount}>Mount</button>
+      <button onClick={this.unmount}>UnMount</button>
+      <div id="mount_point"></div>
+    </div>
   }
 }
 
